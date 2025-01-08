@@ -1,6 +1,6 @@
 #### Advent of code for 2024 in GO?
 
-- [x] 1
+- [x] [Day 1](https://github.com/cakenes/advent-of-code-2024/blob/47c5264a4e29e73b3f8a253b27752d731570714e/main.go#L16)
 - [ ] 2
 - [ ] 3
 - [ ] 4
