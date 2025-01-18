@@ -5,13 +5,15 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"regexp"
 	"sort"
 	"strings"
 )
 
 func main() {
-	day1()
-	day2()
+	// day1()
+	// day2()
+	day3()
 }
 
 func read(filename string) []string {
@@ -38,6 +40,8 @@ func day1() {
 	var first []int
 	var second []int
 
+	final := 0
+
 	for _, line := range lines {
 		numbers := strings.Fields(line)
 		if len(numbers) >= 2 {
@@ -48,8 +52,6 @@ func day1() {
 			second = append(second, tmpsecond)
 		}
 	}
-
-	final := 0
 
 	sort.Ints(first)
 	sort.Ints(second)
@@ -65,6 +67,7 @@ func day2() {
 	lines := read("day2.txt")
 
 	var lineNumbers [][]int
+
 	final := 0
 
 	for _, line := range lines {
@@ -96,5 +99,29 @@ func day2() {
 			final++
 		}
 	}
+	fmt.Println(final)
+}
+
+func day3() {
+	lines := read("day3.txt")
+
+	multiPattern := `mul\(\d+,\d+\)`
+	multiRe := regexp.MustCompile(multiPattern)
+	numberPattern := `\d+`
+	numberRe := regexp.MustCompile(numberPattern)
+
+	final := 0
+
+	for _, line := range lines {
+		matches := multiRe.FindAllString(line, -1)
+		for _, match := range matches {
+			numbers := numberRe.FindAllString(match, -1)
+			var first, second int
+			fmt.Sscanf(numbers[0], "%d", &first)
+			fmt.Sscanf(numbers[1], "%d", &second)
+			final += first * second
+		}
+	}
+
 	fmt.Println(final)
 }
