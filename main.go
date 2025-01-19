@@ -11,9 +11,10 @@ import (
 )
 
 func main() {
-	// day1()
-	// day2()
+	day1()
+	day2()
 	day3()
+	day4()
 }
 
 func read(filename string) []string {
@@ -60,7 +61,7 @@ func day1() {
 		final += int(math.Abs(float64(first[i] - second[i])))
 	}
 
-	fmt.Println(final)
+	fmt.Println("Day 1:", final)
 }
 
 func day2() {
@@ -99,7 +100,8 @@ func day2() {
 			final++
 		}
 	}
-	fmt.Println(final)
+
+	fmt.Println("Day 2:", final)
 }
 
 func day3() {
@@ -123,5 +125,62 @@ func day3() {
 		}
 	}
 
-	fmt.Println(final)
+	fmt.Println("Day 3:", final)
+}
+
+func day4() {
+	lines := read("day4.txt")
+
+	xmasPattern := `XMAS`
+	xmasRe := regexp.MustCompile(xmasPattern)
+	samxPattern := `SAMX`
+	samxRe := regexp.MustCompile(samxPattern)
+
+	final := 0
+
+	// Horizontal
+	for _, row := range lines {
+		for i := 0; i <= len(row)-4; i++ { // Check all possible substrings to handle overlapping
+			substr := row[i : i+4]
+			if xmasRe.MatchString(substr) || samxRe.MatchString(substr) {
+				final++
+			}
+		}
+	}
+
+	// Vertical
+	for col := 0; col < len(lines[0]); col++ {
+		for row := 0; row <= len(lines)-4; row++ { // Check all possible substrings to handle overlapping
+			substr := ""
+			for k := 0; k < 4; k++ {
+				substr += string(lines[row+k][col])
+			}
+			if xmasRe.MatchString(substr) || samxRe.MatchString(substr) {
+				final++
+			}
+		}
+	}
+
+	// Diagonal
+	for i := 0; i <= len(lines)-4; i++ {
+		for j := 0; j <= len(lines[0])-4; j++ { // Check all possible substrings to handle overlapping
+			substr := ""
+			for k := 0; k < 4; k++ {
+				substr += string(lines[i+k][j+k])
+			}
+			if xmasRe.MatchString(substr) || samxRe.MatchString(substr) {
+				final++
+			}
+
+			substr = ""
+			for k := 0; k < 4; k++ {
+				substr += string(lines[i+k][j+3-k])
+			}
+			if xmasRe.MatchString(substr) || samxRe.MatchString(substr) {
+				final++
+			}
+		}
+	}
+
+	fmt.Println("Day 4:", final)
 }
